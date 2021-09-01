@@ -1,0 +1,47 @@
+sr: 44100
+num_classes: 4
+mel_bins: 128
+n_fft: 1380
+fmin: 20
+fmax: 18000
+pad_to: 64
+
+classes: ['Детский крик', 'Детский смех', 'Детский плач', 'Детское пение']
+threshold: 0.5
+
+device: 0
+       
+encoder: !new:model_encoder.WideResNet128Best1380
+  mel_bins: !ref <mel_bins>
+  widen: 6
+  t: 2
+   
+decoder: !new:model_decoder.LinearDecoder
+  encoder: !ref <encoder>
+  num_classes: !ref <num_classes>
+  type_: sigmoid 
+  
+feature_extractor: !new:feature_extraction.ExtractFeature
+  spectrogram_extractor: !ref <spectrogram_extractor>
+  filters: !ref <filters>
+  
+
+spectrogram_extractor: !new:torchlibrosa.Spectrogram
+  n_fft: !ref <n_fft>
+  hop_length: !ref <n_fft> // 4
+  win_length: !ref <n_fft>
+  window: hann
+  center: True
+  pad_mode: reflect
+  power: 2.0
+
+filters: !new:torchlibrosa.LogmelFilterBank
+  sr: !ref <sr>
+  n_fft: !ref <n_fft>
+  n_mels: !ref <mel_bins>
+  fmin: !ref <fmin>
+  fmax: !ref <fmax>
+  is_log: True
+  pad_to: !ref <pad_to>
+  pad_value: -100
+
