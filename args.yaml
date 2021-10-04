@@ -20,12 +20,7 @@ encoder: !new:model_encoder.WideResNet128Best1380
   mel_bins: !ref <mel_bins>
   widen: 6
   t: 2
-   
-decoder: !new:model_decoder.LinearDecoder
-  encoder: !ref <encoder>
-  num_classes: !ref <num_classes>
-  type_: sigmoid 
-  
+    
 feature_extractor: !new:feature_extraction.ExtractFeature
   spectrogram_extractor: !ref <spectrogram_extractor>
   filters: !ref <filters>
