@@ -5,9 +5,10 @@ import numpy as np
 from hyperpyyaml import load_hyperpyyaml
 import torchaudio
 import argparse
+from model_decoder import LinearDecoder
 
 class Inference:
-    def __init__(self, model_path, CUDA=True):
+    def __init__(self, type_, model_path, CUDA=True):
         with open('args.yaml') as file:
             args = load_hyperpyyaml(file)
         device_num = args['device']
@@ -17,10 +18,12 @@ class Inference:
         else:
             self.device = 'cpu'
         self.sr_model = args['sr']
-        self.classes = args['classes']
+        self.classes = args['classes_{}'.format(str(type_))]
         self.threshold = args['threshold']
         self.feat_extractor = args['feature_extractor']
-        self.model = torch.nn.ModuleDict({ 'encoder': args['encoder'], 'decoder': args['decoder']}) 
+        decoder = LinearDecoder(args['encoder'], len(self.classes), type_= 'sigmoid' if len(self.classes) > 2 else 'softmax')
+        self.model = torch.nn.ModuleDict({ 'encoder': args['encoder'], 'decoder': decoder})
+        
         self.feat_extractor.to(self.device)
         self.model.to(self.device)
         self.load_model(model_path)
@@ -76,12 +79,13 @@ class Inference:
     
     
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Введите путь до модели и путь до аудиосигнала')
+    parser = argparse.ArgumentParser(description='Введите номер задачи, путь до модели и путь до аудиосигнала')
+    parser.add_argument('--TYPE', type=int, help='Номер задачи')
     parser.add_argument('--MODEL_PATH', type=str, help='Путь до предобученной модели')
     parser.add_argument('--AUDIO_PATH', type=str, help='Путь до аудиосигнала')
     parser.add_argument('--CUDA', default=False, type=bool, help='Использовать CUDA')
     args_inference = parser.parse_args()
-    inference = Inference(args_inference.MODEL_PATH, args_inference.CUDA)   
+    inference = Inference(args_inference.TYPE, args_inference.MODEL_PATH, args_inference.CUDA)   
     audio, sr = torchaudio.load(args_inference.AUDIO_PATH)
     results = inference.predict(audio, sr)
     print('\nРЕЗУЛЬТАТ:\n')
