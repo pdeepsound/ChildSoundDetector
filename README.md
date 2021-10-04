@@ -31,7 +31,28 @@ python inference.py --TYPE 4 --MODEL_PATH path_to_model --AUDIO_PATH path_to_aud
 - **path_to_audio** - путь до аудиосигнала;
 - **CUDA True** если использовать графический процессор, иначе **CUDA False** (по умолчанию).
 
-Например, результат распознавания модели для 4ой задачи на [аудиосигнале](https://drive.google.com/file/d/1NBUqq8JvtsNxo9zWrU4GrcoI9Xo52d2P/view?usp=sharing) (с плачем ребенка):
+Например, результат распознавания модели для 1ой задачи на [аудиосигнале со звуками природы](https://drive.google.com/file/d/1yKgAPiZ4NQgfwu7LyBcV8m1CI0uKfB4Q/view?usp=sharing):
+```
+РЕЗУЛЬТАТ:
+
+Отсутствие голоса: 0.86
+Наличие голоса: 0.14
+
+На аудиосигнале обнаружено: Отсутствие голоса
+```
+
+Результат распознавания модели для 2ой задачи на [аудиосигнале с плачем ребенка](https://drive.google.com/file/d/1NBUqq8JvtsNxo9zWrU4GrcoI9Xo52d2P/view?usp=sharing):
+```
+РЕЗУЛЬТАТ:
+
+Отсутствие звуков детей: 0.12
+Наличие звуков детей: 0.88
+
+На аудиосигнале обнаружено: Наличие звуков детей
+
+```
+
+Результат распознавания модели для 4ой задачи на [аудиосигнале с плачем ребенка](https://drive.google.com/file/d/1NBUqq8JvtsNxo9zWrU4GrcoI9Xo52d2P/view?usp=sharing):
 ```
 РЕЗУЛЬТАТ:
 
@@ -43,7 +64,7 @@ python inference.py --TYPE 4 --MODEL_PATH path_to_model --AUDIO_PATH path_to_aud
 На аудиосигнале обнаружено: Детский плач
 ```
 
-Результат распознавания на [аудиосигнале](https://drive.google.com/file/d/1yKgAPiZ4NQgfwu7LyBcV8m1CI0uKfB4Q/view?usp=sharing) (звуки природы без звуков детей):
+Результат распознавания модели для 4ой задачи на [аудиосигнале со звуками природы](https://drive.google.com/file/d/1yKgAPiZ4NQgfwu7LyBcV8m1CI0uKfB4Q/view?usp=sharing):
 ```
 РЕЗУЛЬТАТ:
 
